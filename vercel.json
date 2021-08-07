@@ -1,0 +1,13 @@
+{
+  "routes": [
+    {
+      "src": "/customapi/users",
+      "dest": "/pages/api/users.js"
+    },
+    {
+      "src": "/users",
+      "methods": ["POST", "GET"],
+      "dest": "/pages/api/users.js"
+    }
+  ]
+}
