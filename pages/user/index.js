@@ -3,7 +3,8 @@ import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-const index = () => {
+
+const CreateUser = () => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const router = useRouter();
@@ -47,4 +48,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default CreateUser;
