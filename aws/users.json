@@ -1,0 +1,22 @@
+[
+  {
+    "id": "001",
+    "name": "Tyler",
+    "location": "Alexandria, VA"
+  },
+  {
+    "id": "002",
+    "name": "Lena",
+    "location": "New York City, NY"
+  },
+  {
+    "id": "003",
+    "name": "Royce",
+    "location": "Chicago, IL"
+  },
+  {
+    "id": "004",
+    "name": "Sarah",
+    "location": "Rockvile, MD"
+  }
+]
