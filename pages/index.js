@@ -1,5 +1,6 @@
 import Head from "next/head";
 import AllUsers from "../components/AllUsers";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -11,7 +12,12 @@ export default function Home() {
       </Head>
 
       <div>
-        <h3>AWS Date fetch</h3>
+        <div>
+          <h3>AWS Date fetch</h3>
+          <Link href="/user" passHref>
+            <h5>Create New User</h5>
+          </Link>
+        </div>
         <AllUsers />
       </div>
     </div>
