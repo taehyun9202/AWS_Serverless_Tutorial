@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 const AllUsers = () => {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!users) {
@@ -14,7 +15,10 @@ const AllUsers = () => {
           setUsers(res.data);
           setLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setError(true);
+        });
     }
   }, [users]);
 
@@ -41,7 +45,7 @@ const AllUsers = () => {
           ))}
         </>
       ) : (
-        <p>Loading...</p>
+        <>{error ? <p>Something went wrong</p> : <p>Loading...</p>}</>
       )}
     </div>
   );
