@@ -1,9 +1,18 @@
 import Head from "next/head";
 import Link from "next/link";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Home = ({ users }) => {
+const Home = ({ initialUsers }) => {
+  const [users, setUsers] = useState(initialUsers);
+
+  useEffect(() => {
+    axios
+      .get(process.env.NEXT_PUBLIC_API_URL)
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.log(err));
+  }, [users.length]);
+
   return (
     <div>
       <Head>
@@ -51,12 +60,11 @@ const Home = ({ users }) => {
 
 export async function getStaticProps() {
   const res = await axios.get(process.env.NEXT_PUBLIC_API_URL);
-  const users = await res.data;
+  const initialUsers = await res.data;
 
-  console.log(process.env.NEXT_PUBLIC_API_URL, users);
   return {
     props: {
-      users,
+      initialUsers,
     },
   };
 }
