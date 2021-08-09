@@ -3,25 +3,25 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 
-const User = ({ user }) => {
+const User = () => {
   const router = useRouter();
   const { id } = router.query;
   const [edit, setEdit] = useState(false);
-
+  const [user, setUser] = useState(null);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     axios
-  //       .get(process.env.NEXT_PUBLIC_API_URL + id)
-  //       .then((res) => {
-  //         setUser(res.data);
-  //         setLoading(false);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [user, id]);
+  useEffect(() => {
+    if (!user) {
+      axios
+        .get(process.env.NEXT_PUBLIC_API_URL + id)
+        .then((res) => {
+          setUser(res.data);
+          setLoading(false);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user, id]);
 
   const handleSubmit = () => {
     const updatedData = {
@@ -53,7 +53,7 @@ const User = ({ user }) => {
   return (
     <div>
       {!user ? (
-        <p>Not able to get user data</p>
+        <p>Unable to get user data</p>
       ) : (
         <>
           <div>ID: {user.id}</div>
@@ -107,25 +107,25 @@ const User = ({ user }) => {
   );
 };
 
-export async function getStaticPaths() {
-  let users = [];
-  const res = await axios.get(process.env.NEXT_PUBLIC_API_URL);
-  users = res.data;
-  const paths = users.map((user) => ({
-    params: { id: user.id },
-  }));
+// export async function getStaticPaths() {
+//   let users = [];
+//   const res = await axios.get(process.env.NEXT_PUBLIC_API_URL);
+//   users = res.data;
+//   const paths = users.map((user) => ({
+//     params: { id: user.id },
+//   }));
 
-  return { paths, fallback: false };
-}
+//   return { paths, fallback: false };
+// }
 
-export async function getStaticProps({ params }) {
-  console.log(params);
-  const res = await axios.get(process.env.NEXT_PUBLIC_API_URL + params.id);
-  let user = res.data;
-  console.log(user);
-  return {
-    props: { user },
-  };
-}
+// export async function getStaticProps({ params }) {
+//   console.log(params);
+//   const res = await axios.get(process.env.NEXT_PUBLIC_API_URL + params.id);
+//   let user = res.data;
+//   console.log(user);
+//   return {
+//     props: { user },
+//   };
+// }
 
 export default User;
