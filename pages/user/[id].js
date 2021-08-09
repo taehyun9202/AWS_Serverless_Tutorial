@@ -16,9 +16,7 @@ const User = () => {
   useEffect(() => {
     if (!user) {
       axios
-        .get(
-          "https://46mvqgfymj.execute-api.us-east-1.amazonaws.com/prod/" + id
-        )
+        .get(process.env.NEXT_PUBLIC_API_URL + id)
         .then((res) => {
           setUser(res.data);
           setLoading(false);
@@ -36,10 +34,7 @@ const User = () => {
     console.log(updatedData);
 
     axios
-      .post(
-        "https://46mvqgfymj.execute-api.us-east-1.amazonaws.com/prod/",
-        updatedData
-      )
+      .post(process.env.NEXT_PUBLIC_API_URL, updatedData)
       .then((res) => {
         console.log(res);
         router.push("/");
@@ -49,9 +44,7 @@ const User = () => {
 
   const handleRemove = () => {
     axios
-      .delete(
-        "https://46mvqgfymj.execute-api.us-east-1.amazonaws.com/prod/" + id
-      )
+      .delete(process.env.NEXT_PUBLIC_API_URL + id)
       .then((res) => {
         console.log(res);
         router.push("/");

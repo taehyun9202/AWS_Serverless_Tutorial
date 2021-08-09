@@ -10,7 +10,7 @@ const AllUsers = () => {
   useEffect(() => {
     if (!users) {
       axios
-        .get("https://46mvqgfymj.execute-api.us-east-1.amazonaws.com/prod/")
+        .get(process.env.NEXT_PUBLIC_API_URL)
         .then((res) => {
           setUsers(res.data);
           setLoading(false);
@@ -50,5 +50,15 @@ const AllUsers = () => {
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  console.log(process.env.NEXT_PUBLIC_API_URL);
+  return {
+    props: {
+      hello: "world",
+      fetchedUser: null,
+    },
+  };
+}
 
 export default AllUsers;
