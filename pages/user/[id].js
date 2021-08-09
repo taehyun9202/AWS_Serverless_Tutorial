@@ -3,27 +3,25 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 
-const User = () => {
+const User = ({ user }) => {
   const router = useRouter();
   const { id } = router.query;
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [edit, setEdit] = useState(false);
 
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
 
-  useEffect(() => {
-    if (!user) {
-      axios
-        .get(process.env.NEXT_PUBLIC_API_URL + id)
-        .then((res) => {
-          setUser(res.data);
-          setLoading(false);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [user, id]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     axios
+  //       .get(process.env.NEXT_PUBLIC_API_URL + id)
+  //       .then((res) => {
+  //         setUser(res.data);
+  //         setLoading(false);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // }, [user, id]);
 
   const handleSubmit = () => {
     const updatedData = {
@@ -54,8 +52,8 @@ const User = () => {
 
   return (
     <div>
-      {loading ? (
-        <p>loading...</p>
+      {!user ? (
+        <p>Not able to get user data</p>
       ) : (
         <>
           <div>ID: {user.id}</div>
@@ -108,5 +106,26 @@ const User = () => {
     </div>
   );
 };
+
+export async function getStaticPaths() {
+  let users = [];
+  const res = await axios.get(process.env.NEXT_PUBLIC_API_URL);
+  users = res.data;
+  const paths = users.map((user) => ({
+    params: { id: user.id },
+  }));
+
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps({ params }) {
+  console.log(params);
+  const res = await axios.get(process.env.NEXT_PUBLIC_API_URL + params.id);
+  let user = res.data;
+  console.log(user);
+  return {
+    props: { user },
+  };
+}
 
 export default User;

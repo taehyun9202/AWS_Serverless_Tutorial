@@ -1,8 +1,9 @@
 import Head from "next/head";
-import AllUsers from "../components/AllUsers";
 import Link from "next/link";
+import axios from "axios";
+import { useState } from "react";
 
-export default function Home() {
+const Home = ({ users }) => {
   return (
     <div>
       <Head>
@@ -18,8 +19,45 @@ export default function Home() {
             <h5>Create New User</h5>
           </Link>
         </div>
-        <AllUsers />
+        <div>
+          {users ? (
+            <>
+              <p>All User List</p>
+              {users.map((user) => (
+                <Link key={user.id} href={`/user/${user.id}`} passHref>
+                  <div
+                    style={{
+                      background: "#333333",
+                      color: "white",
+                      width: "400px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <p>ID: {user.id}</p>
+                    <p>Name: {user.name}</p>
+                    <p>Location: {user.location}</p>
+                  </div>
+                </Link>
+              ))}
+            </>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
       </div>
     </div>
   );
+};
+
+export async function getStaticProps() {
+  const res = await axios.get(process.env.NEXT_PUBLIC_API_URL);
+  const users = await res.data;
+
+  console.log(process.env.NEXT_PUBLIC_API_URL, users);
+  return {
+    props: {
+      users,
+    },
+  };
 }
+export default Home;
