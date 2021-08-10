@@ -10,6 +10,8 @@ const User = () => {
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user) {
@@ -17,9 +19,13 @@ const User = () => {
         .get(process.env.NEXT_PUBLIC_API_URL + id)
         .then((res) => {
           setUser(res.data);
+          // setInterval(() => setLoading(false), 2000);
           setLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setError(true);
+        });
     }
   }, [user, id]);
 
@@ -51,59 +57,65 @@ const User = () => {
   };
 
   return (
-    <div>
-      {!user ? (
+    <>
+      {error ? (
         <p>Unable to get user data</p>
       ) : (
-        <>
-          <div>ID: {user.id}</div>
-          <div>
-            Name:{" "}
-            {edit ? (
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={user.name}
-              />
-            ) : (
-              <p>{user.name}</p>
-            )}
-          </div>
-          <div>
-            Location:{" "}
-            {edit ? (
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder={user.location}
-              />
-            ) : (
-              <p>{user.location}</p>
-            )}
-          </div>
-
-          <h5
-            onClick={() => {
-              setEdit(!edit);
-              setName("");
-              setLocation("");
-            }}
-          >
-            {edit ? "Cancel" : "Edit"}
-          </h5>
-          {edit ? (
-            <h5 onClick={() => handleSubmit()}>Apply</h5>
+        <div>
+          {loading ? (
+            <p>Loading...</p>
           ) : (
-            <h5 onClick={() => handleRemove()}>Remove User</h5>
+            <>
+              <div>ID: {user.id}</div>
+              <div>
+                Name:{" "}
+                {edit ? (
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={user.name}
+                  />
+                ) : (
+                  <p>{user.name}</p>
+                )}
+              </div>
+              <div>
+                Location:{" "}
+                {edit ? (
+                  <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder={user.location}
+                  />
+                ) : (
+                  <p>{user.location}</p>
+                )}
+              </div>
+
+              <h5
+                onClick={() => {
+                  setEdit(!edit);
+                  setName("");
+                  setLocation("");
+                }}
+              >
+                {edit ? "Cancel" : "Edit"}
+              </h5>
+              {edit ? (
+                <h5 onClick={() => handleSubmit()}>Apply</h5>
+              ) : (
+                <h5 onClick={() => handleRemove()}>Remove User</h5>
+              )}
+              <Link href="/" passHref>
+                <h5>Back to dashboard</h5>
+              </Link>
+            </>
           )}
-          <Link href="/" passHref>
-            <h5>Back to dashboard</h5>
-          </Link>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
