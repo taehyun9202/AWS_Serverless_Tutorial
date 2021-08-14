@@ -7,11 +7,17 @@ const Home = ({ initialUsers }) => {
   const [users, setUsers] = useState(initialUsers);
 
   useEffect(() => {
-    axios
-      .get(process.env.NEXT_PUBLIC_API_URL)
-      .then((res) => setUsers(res.data))
-      .catch((err) => console.log(err));
-  }, [users.length]);
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const res = await axios.get(process.env.NEXT_PUBLIC_API_URL);
+    try {
+      setUsers(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div>
